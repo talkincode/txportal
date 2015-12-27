@@ -3,7 +3,7 @@
 import struct
 import random
 import hashlib
-from txportal import pktutils
+from txportal.packet import pktutils
 import binascii
 import six
 import copy
