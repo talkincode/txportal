@@ -47,7 +47,7 @@ class PortalClient(protocol.DatagramProtocol):
         reactor.callLater(0.001, self.close,)
         return resp
 
-    def sendto(self, req, (host,port) ):
+    def send(self, req, (host,port) ):
         if self.debug:
             # print ":: Hexdump >> %s" % hexdump(str(req),len(req))
             self.log.info("Start send packet To AC (%s:%s) >> %s"%(host,port,repr(req)))
@@ -68,8 +68,8 @@ class PortalClient(protocol.DatagramProtocol):
             self.deferrd.errback(response)
 
 
-def send_auth(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000):
-    return PortalClient(secret, timeout, debug, log, vendor).sendto(data, (host,port))
+def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000):
+    return PortalClient(secret, timeout, debug, log, vendor).send(data, (host,port))
 
 
 
