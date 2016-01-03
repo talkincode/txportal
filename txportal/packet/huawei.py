@@ -229,10 +229,9 @@ class Portal(object):
             _count += 1
 
     def auth_packet(self):
-        if self.ver == 0x01:
-            return
-        _auth = md5_constructor(str(self) + self.secret).digest()
-        self.auth = _auth
+        if self.ver == 0x02:
+            _auth = md5_constructor(str(self) + self.secret).digest()
+            self.auth = _auth
 
     def check_resp_auth(self, req_auth):
         if self.ver == 0x01:
