@@ -66,7 +66,7 @@ class PortalClient(protocol.DatagramProtocol):
             if self.debug:
                 self.log.info(":: Received <%s> packet from AC %s >> %s " % (
                     self.vendor.name, (host, port), repr(resp)))
-            self.deferrd.callback(response)
+            self.deferrd.callback(resp)
         except Exception as err:
             self.log.error('Invalid Response packet from %s: %s' %
                            ((host, port), str(err)))
