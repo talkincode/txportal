@@ -69,7 +69,7 @@ class PortalClient(protocol.DatagramProtocol):
         except Exception as err:
             self.log.error('Invalid Response packet from %s: %s' %
                            ((host, port), str(err)))
-            self.deferrd.errback(response)
+            self.deferrd.errback(err)
 
 
 def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000):
