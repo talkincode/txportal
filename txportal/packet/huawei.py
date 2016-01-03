@@ -230,13 +230,13 @@ class Portal(object):
 
     def auth_packet(self):
         if self.ver == 0x01:
-            pass
+            return
         _auth = md5_constructor(str(self) + self.secret).digest()
         self.auth = _auth
 
     def check_resp_auth(self, req_auth):
         if self.ver == 0x01:
-            pass
+            return True
         resp_auth = self.auth
         self.auth = req_auth
         _auth = md5_constructor(str(self) + self.secret).digest()
