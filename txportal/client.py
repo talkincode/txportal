@@ -37,8 +37,9 @@ class PortalClient(protocol.DatagramProtocol):
 
     def close(self):
         if self.transport is not None:
+            self.transport.stopListening()
             self.transport = None
-            self.port.stopListening()
+
 
     def onError(self, err):
         self.log.err('Packet process error：%s' % str(err))
