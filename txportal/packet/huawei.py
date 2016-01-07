@@ -176,7 +176,7 @@ class Portal(object):
                 setattr(self,key,value)
     @property          
     def sid(self):
-        return "{0}_{1}".format(self.serialNo,self.userIp)
+        return "{0}_{1}".format(self.reqId,self.userIp)
 
     def __len__(self):
         return self.__hdr_len__ + sum([ 2 + len(o[1]) for o in self.attrs ]) 
@@ -452,7 +452,7 @@ class Portal(object):
     def newMessage(typ, userIp, serialNo, reqId, secret, basip=None, chap=False):
         return Portal(
             type=typ,
-            isChap=chap and 0x00 or 0x01,
+            isChap=0x00 if chap else 0x01,
             userIp=pktutils.EncodeAddress(userIp),
             serialNo=serialNo,
             reqId=reqId,
@@ -572,7 +572,7 @@ class PortalV2(Portal):
         return PortalV2(
             ver=0x02,
             type=typ,
-            isChap=chap and 0x00 or 0x01,
+            isChap=0x00 if chap else 0x01,
             userIp=pktutils.EncodeAddress(userIp),
             serialNo=serialNo,
             reqId=reqId,

@@ -3,6 +3,10 @@
 # Utility functions
 import struct
 import six
+import random
+
+random_generator = random.SystemRandom()
+
 
 def EncodeString(str):
     if len(str) > 253:
@@ -62,6 +66,17 @@ def DecodeInteger(num):
 def DecodeDate(num):
     return (struct.unpack('!I', num))[0]
 
+def CreateChallenge():
+    data = []
+    for i in range(16):
+        data.append(random_generator.randrange(0, 256))
+    if six.PY3:
+        return bytes(data)
+    else:
+        return ''.join(chr(b) for b in data)
+
+
+
 
 # XXX - ''.join([(len(`chr(x)`)==3) and chr(x) or '.' for x in range(256)])
 __vis_filter = """................................ !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[.]^_`abcdefghijklmnopqrstuvwxyz{|}~................................................................................................................................."""
@@ -78,3 +93,5 @@ def hexdump(buf, length=16):
         res.append('  %04d:  %-*s %s' % (n, length * 3, hexa, line))
         n += length
     return '\n'.join(res)
+
+#print repr(CreateChallenge())

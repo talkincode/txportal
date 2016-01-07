@@ -175,7 +175,7 @@ class Portal(object):
                 setattr(self,key,value)
     @property          
     def sid(self):
-        return "{0}_{1}".format(self.serialNo, self.userIp)
+        return "{0}_{1}".format(self.reqId, self.userIp)
 
     def __len__(self):
         return self.__hdr_len__ + sum([ 2 + len(o[1]) for o in self.attrs ]) 
