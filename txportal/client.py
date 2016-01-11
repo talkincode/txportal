@@ -27,7 +27,7 @@ class PortalClient(protocol.DatagramProtocol):
         'huaweiv2': Vendor('huaweiv2', huawei, huawei.PortalV2),
     }
 
-    def __init__(self, secret, timeout=10, debug=True, log=None, vendor='cmccv2'):
+    def __init__(self, secret, timeout=5, debug=True, log=None, vendor='cmccv2'):
         self.secret = six.b(secret)
         self.log = log or Logger()
         self.timeout = timeout
@@ -49,7 +49,11 @@ class PortalClient(protocol.DatagramProtocol):
         reactor.callLater(0.001, self.close,)
         return resp
 
-    def send(self, req, (host, port)):
+    def onTimeout(self,deferred):
+        reactor.callLater(0.01, self.close,)
+        defer.timeout(deferred)
+
+    def send(self, req, (host, port), **kwargs):
         if self.debug:
             # print ":: Hexdump >> %s" % hexdump(str(req),len(req))
             self.log.info("Start send packet To AC (%s:%s) >> %s" %
@@ -58,6 +62,7 @@ class PortalClient(protocol.DatagramProtocol):
         self.transport.write(str(req), (host, port))
         self.deferrd = defer.Deferred()
         self.deferrd.addCallbacks(self.onResult, self.onError)
+        self.deferrd.setTimeout(self.timeout, timeout=self.onTimeout)
         return self.deferrd
 
     def datagramReceived(self, datagram, (host, port)):
