@@ -42,16 +42,17 @@ class PortalClient(protocol.DatagramProtocol):
 
 
     def onError(self, err):
-        self.log.err('Packet process error：%s' % str(err))
-        self.close()
+        log.err('Packet process error：%s' % str(err))
+        reactor.callLater(0.01, self.close,)
+        return err
 
     def onResult(self, resp):
         reactor.callLater(0.001, self.close,)
         return resp
 
-    def onTimeout(self,deferred):
-        reactor.callLater(0.01, self.close,)
-        defer.timeout(deferred)
+    def onTimeout(self):
+        if not self.deferrd.called:
+            defer.timeout(self.deferrd)
 
     def send(self, req, (host, port), **kwargs):
         if self.debug:
@@ -62,7 +63,7 @@ class PortalClient(protocol.DatagramProtocol):
         self.transport.write(str(req), (host, port))
         self.deferrd = defer.Deferred()
         self.deferrd.addCallbacks(self.onResult, self.onError)
-        self.deferrd.setTimeout(self.timeout, timeout=self.onTimeout)
+        reactor.callLater(self.timeout, self.onTimeout,)
         return self.deferrd
 
     def datagramReceived(self, datagram, (host, port)):
