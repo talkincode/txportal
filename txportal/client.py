@@ -42,7 +42,7 @@ class PortalClient(protocol.DatagramProtocol):
 
 
     def onError(self, err):
-        log.err('Packet process error：%s' % str(err))
+        self.log.error('Packet process error：%s' % str(err))
         reactor.callLater(0.01, self.close,)
         return err
 
