@@ -26,7 +26,7 @@ def EncodeOctets(str):
 def EncodeAddress(addr):
     if not isinstance(addr, six.string_types):
         raise TypeError('Address has to be a string')
-    if '.' not in addr:
+    if addr.count(".") == 3:
         return addr
     (a, b, c, d) = map(int, addr.split('.'))
     return struct.pack('BBBB', a, b, c, d)
@@ -94,4 +94,4 @@ def hexdump(buf, length=16):
         n += length
     return '\n'.join(res)
 
-#print repr(CreateChallenge())
+print repr(EncodeAddress('27.46.128.15'))
