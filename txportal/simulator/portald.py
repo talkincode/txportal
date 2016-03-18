@@ -14,6 +14,16 @@ from txportal.simulator.handlers import (
     logout_handler
 )
 from twisted.logger import Logger
+import functools,time
+
+def timecast(func):
+    @functools.wraps(func)
+    def warp(*args,**kargs):
+        _start = time.clock()
+        result = func(*args,**kargs)
+        print "%s cast %.6f second"%(func.__name__,time.clock()-_start)
+        return result
+    return warp
 
 
 class TpSimMaster(protocol.DatagramProtocol):
@@ -68,7 +78,7 @@ class TpSimWorker(protocol.DatagramProtocol):
             return huawei.PortalV2(secret=self.secret, packet=datagram, source=(host, port))
         else:
             raise ACError("vendor {0} not support".format(self.vendor))
-
+    @timecast
     def process(self, message):
         try:
             datagram, host, port =  msgpack.unpackb(message[0])

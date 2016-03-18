@@ -7,7 +7,9 @@ import txportal
 version = txportal.__version__
 
 install_requires = [
-    'Twisted>=13.0.0'
+    'Twisted>=13.0.0',
+    'txzmq',
+    'msgpack-python'
 ]
 install_requires_empty = []
 
@@ -19,7 +21,7 @@ setup(name='txportal',
       author='jamiesun',
       author_email='jamiesun.net@gmail.com',
       url='https://github.com/talkincode/txportal',
-      license='GPL',
+      license='MIT',
       description='Portal tools',
       long_description=open('README.md').read(),
       classifiers=[
@@ -31,8 +33,9 @@ setup(name='txportal',
        ],
       packages=find_packages(),
       package_data=package_data,
-      keywords=['portal', 'cmcc','huawei','h3c'],
+      keywords=['portal', 'cmcc','huawei','h3c','toughwlan'],
       zip_safe=True,
+      scripts=["tpsim"],
       include_package_data=True,
       install_requires=install_requires,
 )

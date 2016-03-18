@@ -3,7 +3,6 @@
 
 from twisted.internet import defer
 from txradius import client
-from toughlib import logger, dispatch
 import functools
 
 class ACError(BaseException):

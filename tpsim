@@ -31,11 +31,11 @@ if __name__ == '__main__':
         parser.print_help()
 
     config = dict(
-        portal_host = args.portal_host,
+        portal_host = os.environ.get("PORTAL_HOST",args.portal_host),
         portal_listen = args.portal_listen,
         port = args.port,
-        secret = args.secret,
-        vendor = args.vendor,
+        secret = os.environ.get("PROTAL_SECRET",args.secret),
+        vendor = os.environ.get("PROTAL_vendor",args.vendor),
         debug = args.debug
     )
     
