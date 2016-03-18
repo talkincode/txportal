@@ -29,6 +29,7 @@ if __name__ == '__main__':
     print args
     if not args.master and not  args.worker:
         parser.print_help()
+        sys.exit(0)
 
     config = dict(
         portal_host = os.environ.get("PORTAL_HOST",args.portal_host),
@@ -42,11 +43,11 @@ if __name__ == '__main__':
     try:
         if args.worker:
             portald.run_worker(config)
-            reactor.run()
 
-        elif args.master:
+        if args.master:
             portald.run_master(config)
-            reactor.run()
+
+        reactor.run()
 
     except:
         parser.print_help()

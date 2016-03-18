@@ -7,7 +7,7 @@ import txportal
 version = txportal.__version__
 
 install_requires = [
-    'Twisted>=13.0.0',
+    'Twisted>=15.0.0',
     'txzmq',
     'msgpack-python'
 ]
