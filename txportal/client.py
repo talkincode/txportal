@@ -82,5 +82,5 @@ class PortalClient(protocol.DatagramProtocol):
             self.deferrd.errback(err)
 
 
-def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000):
-    return PortalClient(secret, timeout, debug, log, vendor).send(data, (host, port))
+def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000, **kwargs):
+    return PortalClient(secret, timeout, debug, log, vendor).send(data, (host, port),**kwargs)
