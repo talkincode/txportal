@@ -7,5 +7,3 @@ ADD supervisord.conf /etc/supervisord.conf
 EXPOSE 2000/udp
 
 CMD ["/usr/local/bin/supervisord","-c","/etc/supervisord.conf"]
-
-`

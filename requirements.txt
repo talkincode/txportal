@@ -1,3 +1,4 @@
 Twisted>=13.0.0
+pyzmq
 txzmq
 msgpack-python
