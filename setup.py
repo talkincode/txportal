@@ -36,6 +36,7 @@ setup(name='txportal',
       keywords=['portal', 'cmcc','huawei','h3c','toughwlan'],
       zip_safe=True,
       scripts=["tpsim"],
+      eager_resources=['txportal'],
       include_package_data=True,
       install_requires=install_requires,
 )

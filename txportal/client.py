@@ -54,17 +54,20 @@ class PortalClient(protocol.DatagramProtocol):
         if not self.deferrd.called:
             defer.timeout(self.deferrd)
 
-    def send(self, req, (host, port), **kwargs):
+    def send(self, req, (host, port), noresp=False, **kwargs):
         if self.debug:
             # print ":: Hexdump >> %s" % hexdump(str(req),len(req))
             self.log.info("Start send packet To AC (%s:%s) >> %s" %
                           (host, port, repr(req)))
 
         self.transport.write(str(req), (host, port))
-        self.deferrd = defer.Deferred()
-        self.deferrd.addCallbacks(self.onResult, self.onError)
-        reactor.callLater(self.timeout, self.onTimeout,)
-        return self.deferrd
+        if noresp:
+            reactor.callLater(0.1, self.close)
+        else:
+            self.deferrd = defer.Deferred()
+            self.deferrd.addCallbacks(self.onResult, self.onError)
+            reactor.callLater(self.timeout, self.onTimeout,)
+            return self.deferrd
 
     def datagramReceived(self, datagram, (host, port)):
         try:
@@ -79,5 +82,5 @@ class PortalClient(protocol.DatagramProtocol):
             self.deferrd.errback(err)
 
 
-def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000):
-    return PortalClient(secret, timeout, debug, log, vendor).send(data, (host, port))
+def send(secret, timeout=10, debug=True, log=None, vendor='cmccv2', data=None, host=None, port=2000, **kwargs):
+    return PortalClient(secret, timeout, debug, log, vendor).send(data, (host, port),**kwargs)

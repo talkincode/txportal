@@ -7,6 +7,7 @@ sys.path.insert(0,os.path.split(__file__)[0])
 from twisted.python import log
 from twisted.internet import reactor
 from txportal.simulator import portald
+from txportal.simulator import simpp
 import argparse
 
 if __name__ == '__main__':
@@ -23,8 +24,9 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--port', type=int, default=2000, dest='port', 
         help='ac port, default 2000')
     parser.add_argument('-d', '--debug', action='store_true', default=False, dest='debug', help='debug option')
-    parser.add_argument('-M', '--master', action='store_true', default=False, dest='master', help='master option')
-    parser.add_argument('-W', '--worker', action='store_true', default=False, dest='worker', help='worker option')
+    parser.add_argument('-M', '--master', action='store_true', default=False, dest='master', help='run master')
+    parser.add_argument('-W', '--worker', action='store_true', default=False, dest='worker', help='run worker')
+    parser.add_argument('-f', '--fork', type=int, default=4, dest='fork', help='worker fork num')
     args = parser.parse_args(sys.argv[1:])
     print args
     if not args.master and not  args.worker:
@@ -41,11 +43,15 @@ if __name__ == '__main__':
     )
     
     try:
-        if args.worker:
-            portald.run_worker(config)
-
         if args.master:
             portald.run_master(config)
+            cmd = sys.executable
+            path = os.path.dirname(__file__)
+            for i in range(args.fork):
+                reactor.spawnProcess(simpp.SimProtocol(),cmd,[cmd,'tpsim','-W','-d'],path=path, env={})
+
+        if args.worker:
+            portald.run_worker(config)
 
         reactor.run()
 
