@@ -460,7 +460,7 @@ class Portal(object):
         )
 
     @staticmethod        
-    def newReqChallenge(userIp, secret, basip=None,  serialNo=None, chap=False):
+    def newReqChallenge(userIp, secret, basip=None,  serialNo=None, chap=False,mac=None):
         """0x01"""
         pkt = Portal.newMessage(REQ_CHALLENGE,userIp,(serialNo or CurrentSN()),0,secret,chap=chap)
         return pkt
@@ -468,7 +468,7 @@ class Portal(object):
 
 
     @staticmethod         
-    def newReqAuth(userIp, username, password, reqId, challenge, secret, basip=None, serialNo=None, chap=False):
+    def newReqAuth(userIp, username, password, reqId, challenge, secret, basip=None, serialNo=None, chap=False,mac=None):
         """0x03"""
         pkt = Portal.newMessage(REQ_AUTH, userIp, (serialNo or CurrentSN()), reqId, secret, chap=chap)
         username = pktutils.EncodeString(username)
@@ -503,7 +503,7 @@ class Portal(object):
 
 
     @staticmethod        
-    def newReqLogout(userIp,secret, basip=None, serialNo=None, chap=True):
+    def newReqLogout(userIp,secret, basip=None, serialNo=None, chap=True,mac=None):
         """0x05"""
         pkt = Portal.newMessage(
             REQ_LOGOUT,userIp,(serialNo or CurrentSN()),0,secret,chap=chap)
@@ -517,7 +517,7 @@ class Portal(object):
 
         
     @staticmethod        
-    def newAffAckAuth(userIp,secret, basip=None, serialNo=None,reqId=None, chap=True):
+    def newAffAckAuth(userIp,secret, basip=None, serialNo=None,reqId=None, chap=True,mac=None):
         """0x07"""
         pkt = Portal.newMessage(AFF_ACK_AUTH,userIp,(serialNo or CurrentSN()),(reqId or 0),secret, chap=chap)
         bas_addr = basip and pktutils.EncodeAddress(basip) or None
@@ -530,7 +530,7 @@ class Portal(object):
 
         
     @staticmethod        
-    def newReqInfo(userIp,secret, basip=None, serialNo=None, chap=True):
+    def newReqInfo(userIp,secret, basip=None, serialNo=None, chap=True,mac=None):
         """0x09"""
         pkt = Portal.newMessage(REQ_INFO,userIp,(serialNo or CurrentSN()),0,secret, chap=chap)
         pkt.attrNum = 1
@@ -539,7 +539,7 @@ class Portal(object):
         return pkt  
 
     @staticmethod        
-    def newNtfHeart(secret, basip=None, chap=True):
+    def newNtfHeart(secret, basip=None, chap=True,mac=None):
         """0x0f NTF_HEARTBEAT"""
         pkt = Portal.newMessage(NTF_HEARTBEAT,'0.0.0.0',CurrentSN(),0,secret, chap=chap)
         bas_addr = basip and pktutils.EncodeAddress(basip) or None
@@ -581,14 +581,14 @@ class PortalV2(Portal):
         )
 
     @staticmethod
-    def newReqChallenge(userIp, secret, basip=None, serialNo=None, chap=False):
+    def newReqChallenge(userIp, secret, basip=None, serialNo=None, chap=False,mac=None):
         """0x01"""
         pkt = PortalV2.newMessage(REQ_CHALLENGE, userIp, (serialNo or CurrentSN()), 0, secret, chap=chap)
         pkt.auth_packet()
         return pkt
 
     @staticmethod
-    def newReqAuth(userIp, username, password, reqId, challenge, secret, basip=None, serialNo=None, chap=False):
+    def newReqAuth(userIp, username, password, reqId, challenge, secret, basip=None, serialNo=None, chap=False,mac=None):
         """0x03"""
         pkt = PortalV2.newMessage(REQ_AUTH, userIp, (serialNo or CurrentSN()), reqId, secret, chap=chap)
         username = pktutils.EncodeString(username)
@@ -624,7 +624,7 @@ class PortalV2(Portal):
 
 
     @staticmethod
-    def newReqLogout(userIp, secret, basip=None, serialNo=None, chap=True):
+    def newReqLogout(userIp, secret, basip=None, serialNo=None, chap=True,mac=None):
         """0x05"""
         pkt = PortalV2.newMessage(REQ_LOGOUT, userIp, (serialNo or CurrentSN()), 0, secret, chap=chap)
         bas_addr = basip and pktutils.EncodeAddress(basip) or None
@@ -638,7 +638,7 @@ class PortalV2(Portal):
 
 
     @staticmethod
-    def newNtfHeart(secret, basip=None, chap=True):
+    def newNtfHeart(secret, basip=None, chap=True,mac=None):
         """0x0f NTF_HEARTBEAT"""
         pkt = PortalV2.newMessage(NTF_HEARTBEAT, '0.0.0.0', CurrentSN(), 0, secret, chap=chap)
         bas_addr = basip and pktutils.EncodeAddress(basip) or None
@@ -651,7 +651,7 @@ class PortalV2(Portal):
         return pkt
 
     @staticmethod
-    def newReqInfo(userIp, secret, basip=None, serialNo=None, chap=True):
+    def newReqInfo(userIp, secret, basip=None, serialNo=None, chap=True,mac=None):
         """0x09"""
         pkt = PortalV2.newMessage(REQ_INFO, userIp, (serialNo or CurrentSN()), 0, secret, chap=chap)
         pkt.attrNum = 1
@@ -660,7 +660,7 @@ class PortalV2(Portal):
         return pkt
 
     @staticmethod
-    def newAffAckAuth(userIp, secret, basip=None, serialNo=None, reqId=None, chap=True):
+    def newAffAckAuth(userIp, secret, basip=None, serialNo=None, reqId=None, chap=True,mac=None):
         """0x07"""
         pkt = PortalV2.newMessage(AFF_ACK_AUTH, userIp, (serialNo or CurrentSN()), (reqId or 0), secret, chap=chap)
         bas_addr = basip and pktutils.EncodeAddress(basip) or None
