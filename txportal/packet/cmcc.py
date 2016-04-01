@@ -439,7 +439,7 @@ class Portal(object):
     def newMessage(typ, userIp, serialNo,reqId,secret, basip=None, chap=False):
         return Portal(
             type = typ,
-            isChap=chap and 0x00 or 0x01,
+            isChap=0x00 if chap else 0x01,
             userIp = pktutils.EncodeAddress(userIp),
             serialNo = serialNo,
             reqId = reqId,
